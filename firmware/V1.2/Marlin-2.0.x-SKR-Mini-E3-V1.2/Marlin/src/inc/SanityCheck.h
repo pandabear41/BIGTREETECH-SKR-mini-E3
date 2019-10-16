@@ -74,7 +74,9 @@
 #elif defined(CUSTOM_MENDEL_NAME)
   #error "CUSTOM_MENDEL_NAME is now CUSTOM_MACHINE_NAME. Please update your configuration."
 #elif defined(HAS_AUTOMATIC_VERSIONING)
-  #error "HAS_AUTOMATIC_VERSIONING is now USE_AUTOMATIC_VERSIONING. Please update your configuration."
+  #error "HAS_AUTOMATIC_VERSIONING is now CUSTOM_VERSION_FILE. Please update your configuration."
+#elif defined(USE_AUTOMATIC_VERSIONING)
+  #error "USE_AUTOMATIC_VERSIONING is now CUSTOM_VERSION_FILE. Please update your configuration."
 #elif defined(SDSLOW)
   #error "SDSLOW deprecated. Set SPI_SPEED to SPI_HALF_SPEED instead."
 #elif defined(SDEXTRASLOW)
@@ -2510,4 +2512,12 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
     #endif
   #endif
   #undef _PIN_CONFLICT
+#endif
+
+#if !HAS_GRAPHICAL_LCD
+  #if ENABLED(PRINT_PROGRESS_SHOW_DECIMALS)
+    #error "PRINT_PROGRESS_SHOW_DECIMALS currently requires a Graphical LCD."
+  #elif ENABLED(SHOW_REMAINING_TIME)
+    #error "SHOW_REMAINING_TIME currently requires a Graphical LCD."
+  #endif
 #endif
