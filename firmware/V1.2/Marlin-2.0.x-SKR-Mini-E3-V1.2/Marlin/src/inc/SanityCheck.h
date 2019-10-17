@@ -417,6 +417,7 @@
 #define BOARD_BIQU_SKR_V1_1 -1004
 #define BOARD_STM32F1R      -1005
 #define BOARD_STM32F103R    -1006
+#define BOARD_ESP32         -1007
 #if MB(MKS_13)
   #error "BOARD_MKS_13 has been renamed BOARD_MKS_GEN_13. Please update your configuration."
 #elif MB(TRIGORILLA)
@@ -431,6 +432,8 @@
   #error "BOARD_STM32F1R has been renamed BOARD_STM32F103RE. Please update your configuration."
 #elif MB(STM32F103R)
   #error "BOARD_STM32F103R has been renamed BOARD_STM32F103RE. Please update your configuration."
+#elif MOTHERBOARD == BOARD_ESP32
+  #error "BOARD_ESP32 has been renamed BOARD_ESPRESSIF_ESP32. Please update your configuration."
 #endif
 #undef BOARD_MKS_13
 #undef BOARD_TRIGORILLA
@@ -439,6 +442,7 @@
 #undef BOARD_BIQU_SKR_V1_1
 #undef BOARD_STM32F1R
 #undef BOARD_STM32F103R
+#undef BOARD_ESP32
 
 /**
  * Marlin release, version and default string
@@ -2034,7 +2038,7 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
 /**
  * TMC2208/2209 software UART and ENDSTOP_INTERRUPTS both use pin change interrupts (PCI)
  */
-#if HAS_TMC220x && !defined(TARGET_LPC1768) && !defined(TARGET_STM32F1) && ENABLED(ENDSTOP_INTERRUPTS_FEATURE) && !( \
+#if HAS_TMC220x && !defined(TARGET_LPC1768) && ENABLED(ENDSTOP_INTERRUPTS_FEATURE) && !( \
        defined(X_HARDWARE_SERIAL ) || defined(X2_HARDWARE_SERIAL) \
     || defined(Y_HARDWARE_SERIAL ) || defined(Y2_HARDWARE_SERIAL) \
     || defined(Z_HARDWARE_SERIAL ) || defined(Z2_HARDWARE_SERIAL) \
@@ -2331,11 +2335,24 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
 #endif
 
 #if ENABLED(Z_STEPPER_AUTO_ALIGN)
+
   #if !Z_MULTI_STEPPER_DRIVERS
     #error "Z_STEPPER_AUTO_ALIGN requires Z_DUAL_STEPPER_DRIVERS or Z_TRIPLE_STEPPER_DRIVERS."
   #elif !HAS_BED_PROBE
     #error "Z_STEPPER_AUTO_ALIGN requires a Z-bed probe."
   #endif
+
+  #if ENABLED(Z_STEPPER_ALIGN_KNOWN_STEPPER_POSITIONS)
+    #if DISABLED(Z_TRIPLE_STEPPER_DRIVERS)
+      #error "Z_STEPPER_ALIGN_KNOWN_STEPPER_POSITIONS requires Z_TRIPLE_STEPPER_DRIVERS."
+    #endif
+    constexpr float sanity_arr_screw_xy[][2] = Z_STEPPER_ALIGN_STEPPER_XY;
+    static_assert(
+      COUNT(sanity_arr_screw_xy) == Z_STEPPER_COUNT,
+      "Z_STEPPER_ALIGN_STEPPER_XY requires three {X,Y} entries (one per Z stepper)."
+    );
+  #endif
+
 #endif
 
 #if ENABLED(PRINTCOUNTER) && DISABLED(EEPROM_SETTINGS)
