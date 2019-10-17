@@ -1321,10 +1321,10 @@
 
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
-  //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+  #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
     //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
-    //#define BABYSTEP_ZPROBE_GFX_OVERLAY   // Enable graphical overlay on Z-offset editor
+    #define BABYSTEP_ZPROBE_GFX_OVERLAY   // Enable graphical overlay on Z-offset editor
   #endif
 #endif
 
@@ -1696,7 +1696,7 @@
   //#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
   //#define HOME_BEFORE_FILAMENT_CHANGE           // Ensure homing has been completed prior to parking for filament change
 
-  //#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
+  #define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
   //#define FILAMENT_UNLOAD_ALL_EXTRUDERS         // Allow M702 to unload all extruders above a minimum target temp (as set by M302)
 #endif
 
@@ -1819,21 +1819,18 @@
     #define X_RSENSE     0.11
     #define X_CHAIN_POS    -1  // <=0 : Not chained. 1 : MCU MOSI connected. 2 : Next in chain, ...
   #endif
-
   #if AXIS_IS_TMC(X2)
     #define X2_CURRENT    800
     #define X2_MICROSTEPS  16
     #define X2_RSENSE    0.11
     #define X2_CHAIN_POS   -1
   #endif
-
   #if AXIS_IS_TMC(Y)
     #define Y_CURRENT     580
     #define Y_MICROSTEPS   16
     #define Y_RSENSE     0.11
     #define Y_CHAIN_POS    -1
   #endif
-
   #if AXIS_IS_TMC(Y2)
     #define Y2_CURRENT    800
     #define Y2_MICROSTEPS  16
@@ -1847,7 +1844,6 @@
     #define Z_RSENSE     0.11
     #define Z_CHAIN_POS    -1
   #endif
-
   #if AXIS_IS_TMC(Z2)
     #define Z2_CURRENT    800
     #define Z2_MICROSTEPS  16
@@ -1868,7 +1864,6 @@
     #define E0_RSENSE    0.11
     #define E0_CHAIN_POS   -1
   #endif
-
   #if AXIS_IS_TMC(E1)
     #define E1_CURRENT    800
     #define E1_MICROSTEPS  16
@@ -2091,7 +2086,7 @@
   /**
    * You can set your own advanced settings by filling in predefined functions.
    * A list of available functions can be found on the library github page
-   * https://github.com/teemuatlut/TMCStepper
+  //#define TMC_DEBUG
    *
    * Example:
    * #define TMC_ADV() { \
